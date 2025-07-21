@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Sheet Webhook Form</title>
+</head>
+<body>
+  <!-- ====== USER CONFIGURABLE VARIABLES ====== -->
+  <!-- Replace these values below -->
+  <!-- WEBHOOK_URL: Your Google Apps Script Web App URL -->
+  <!-- AUTH_TOKEN: Your secret token (must match AUTH_TOKEN in code.js) -->
+  <!-- ========================================== -->
+
+  <h2>Submit Data to Google Sheet</h2>
+  <form id="webhookForm">
+    <input type="text" name="name" placeholder="Name" required /><br><br>
+    <input type="email" name="email" placeholder="Email" required /><br><br>
+    <input type="text" name="message" placeholder="Message" /><br><br>
+    <!-- No need for a visible secret field; token will be sent in header -->
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    // ====== USER CONFIGURABLE VARIABLES ======
+    const WEBHOOK_URL = "https://script.google.com/macros/s/Aereeeeeeekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk8zetE7lhwBk-A-eeeeee/exec"; // <-- Change this to your Web App URL
+    const AUTH_TOKEN = "YOUR_SECRET_TOKEN";     // <-- Change this to your secret token
+    // =========================================
+
+    document.getElementById("webhookForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form).entries());
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": AUTH_TOKEN // Send token in header
+        },
+        body: JSON.stringify(data)
+      });
+      const resultText = await res.text();
+      alert("Response: " + resultText);
+    });
+  </script>
+</body>
+</html>
